@@ -34,7 +34,7 @@
   </style>
 </head>
 <body>
-  <h1>Your Wanted Poster</h1>
+  <h1>Your Poster</h1>
   <canvas id="posterCanvas" width="400" height="600"></canvas>
   <button id="download">Download Poster</button>
   <script>
@@ -54,7 +54,7 @@
       const img = new Image();
       img.src = photo;
       img.onload = () => {
-        ctx.drawImage(img, 100, 100, 200, 200); // User photo
+        ctx.drawImage(img, 80, 80, 200, 200); // User photo
         ctx.fillStyle = '#000';
         ctx.font = '20px Goku';
         ctx.fillText(`Name: ${name}`, 50, 400);
