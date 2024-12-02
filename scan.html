@@ -3,65 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fingerprint Scanning</title>
+  <title>Fingerprint Scanner</title>
   <style>
+    @font-face {
+      font-family: 'Goku';
+      src: url('Goku.woff2') format('woff2'); /* Update path */
+    }
     body {
+      font-family: 'Goku', sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: black;
+      background: black;
       color: white;
-      font-family: Arial, sans-serif;
     }
     .scanner-box {
       width: 150px;
       height: 150px;
       border: 4px solid #00ffcc;
       border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       margin: 20px;
-      animation: scan-glow 2s infinite;
+      display: none;
     }
     .progress {
       font-size: 18px;
       margin-top: 20px;
     }
-    @keyframes scan-glow {
-      0%, 100% {
-        box-shadow: 0 0 10px 4px #00ffcc;
-      }
-      50% {
-        box-shadow: 0 0 20px 10px #00ffcc;
-      }
+    button {
+      padding: 10px 20px;
+      background-color: orange;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: darkorange;
     }
   </style>
 </head>
 <body>
-  <div>
-    <h1>Place Your Thumbs</h1>
-    <div style="display: flex; justify-content: center;">
-      <div class="scanner-box"></div>
-      <div class="scanner-box"></div>
-    </div>
+  <h1>Fingerprint Scanner</h1>
+  <button id="startScan">Place Finger</button>
+  <div id="scanners" style="display: none;">
+    <div class="scanner-box"></div>
     <div class="progress" id="progress">Progress: 0%</div>
   </div>
+
   <script>
-    let progress = 0;
+    const button = document.getElementById('startScan');
+    const scanners = document.getElementById('scanners');
     const progressElement = document.getElementById('progress');
-    const interval = setInterval(() => {
-      if (progress >= 100) {
-        clearInterval(interval);
-        window.location.href = 'poster.html';
-      } else {
-        progress++;
-        progressElement.textContent = `Progress: ${progress}%`;
-      }
-    }, 50);
+    let progress = 0;
+
+    button.addEventListener('click', () => {
+      button.style.display = 'none';
+      scanners.style.display = 'block';
+      const interval = setInterval(() => {
+        if (progress >= 100) {
+          clearInterval(interval);
+          window.location.href = 'poster.html';
+        } else {
+          progress++;
+          progressElement.textContent = `Progress: ${progress}%`;
+        }
+      }, 50);
+    });
   </script>
 </body>
 </html>
