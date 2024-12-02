@@ -54,12 +54,12 @@
       const img = new Image();
       img.src = photo;
       img.onload = () => {
-        ctx.drawImage(img, 80, 80, 200, 200); // User photo
+        ctx.drawImage(img, 80, 80, 150, 150); // User photo
         ctx.fillStyle = '#000';
         ctx.font = '20px Goku';
-        ctx.fillText(`Name: ${name}`, 50, 400);
-        ctx.fillText(`Age: ${age}`, 50, 430);
-        ctx.fillText(`Gender: ${gender}`, 50, 460);
+        ctx.fillText(`Name: ${name}`, 60, 400);
+        ctx.fillText(`Age: ${age}`, 60, 430);
+        ctx.fillText(`Gender: ${gender}`, 60, 460);
       };
     };
 
