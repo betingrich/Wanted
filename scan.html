@@ -27,7 +27,14 @@
       border: 4px solid #00ffcc;
       border-radius: 50%;
       margin: 20px;
-      display: none;
+      background: grey;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    .scanner-box:hover {
+      background: lightgrey;
     }
     .progress {
       font-size: 18px;
@@ -49,22 +56,20 @@
 </head>
 <body>
   <h1>Fingerprint Scanner</h1>
-  <button id="startScan">Place Finger</button>
-  <div id="scanners" style="display: none;">
-    <div class="scanner-box"></div>
+  <div id="scanners">
+    <div class="scanner-box" id="fingerprintScanner">Place Finger</div>
     <div class="progress" id="progress">Progress: 0%</div>
   </div>
 
   <script>
-    const button = document.getElementById('startScan');
-    const scanners = document.getElementById('scanners');
+    const fingerprintScanner = document.getElementById('fingerprintScanner');
     const progressElement = document.getElementById('progress');
     let progress = 0;
+    let interval;
 
-    button.addEventListener('click', () => {
-      button.style.display = 'none';
-      scanners.style.display = 'block';
-      const interval = setInterval(() => {
+    fingerprintScanner.addEventListener('click', () => {
+      if (interval) return; // Prevent multiple intervals
+      interval = setInterval(() => {
         if (progress >= 100) {
           clearInterval(interval);
           window.location.href = 'poster.html';
