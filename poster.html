@@ -46,18 +46,21 @@
     const gender = localStorage.getItem('gender');
     const photo = localStorage.getItem('photo');
 
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, 400, 600);
-    ctx.fillStyle = '#000';
-    ctx.font = '20px Goku';
-    ctx.fillText(`Name: ${name}`, 50, 50);
-    ctx.fillText(`Age: ${age}`, 50, 80);
-    ctx.fillText(`Gender: ${gender}`, 50, 110);
+    const posterImage = new Image(); // Background wanted poster image
+    posterImage.src = 'wanted-poster-template.png'; // Replace with the poster template path
+    posterImage.onload = () => {
+      ctx.drawImage(posterImage, 0, 0, 400, 600);
 
-    const img = new Image();
-    img.src = photo;
-    img.onload = () => {
-      ctx.drawImage(img, 100, 150, 200, 200);
+      const img = new Image();
+      img.src = photo;
+      img.onload = () => {
+        ctx.drawImage(img, 100, 150, 200, 200); // User photo
+        ctx.fillStyle = '#000';
+        ctx.font = '20px Goku';
+        ctx.fillText(`Name: ${name}`, 50, 400);
+        ctx.fillText(`Age: ${age}`, 50, 430);
+        ctx.fillText(`Gender: ${gender}`, 50, 460);
+      };
     };
 
     document.getElementById('download').addEventListener('click', () => {
