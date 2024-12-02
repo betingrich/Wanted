@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wanted Poster</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #posterCanvas {
+      border: 2px solid black;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: orange;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: darkorange;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Wanted Poster</h1>
+  <canvas id="posterCanvas" width="400" height="600"></canvas>
+  <button id="download">Download Poster</button>
+  <script>
+    const canvas = document.getElementById('posterCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const name = localStorage.getItem('name');
+    const age = localStorage.getItem('age');
+    const gender = localStorage.getItem('gender');
+    const photo = localStorage.getItem('photo');
+
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, 400, 600);
+    ctx.fillStyle = '#000';
+    ctx.font = '20px Canterbury Regular';
+    ctx.fillText(`Name: ${name}`, 50, 50);
+    ctx.fillText(`Age: ${age}`, 50, 80);
+    ctx.fillText(`Gender: ${gender}`, 50, 110);
+
+    // Add user photo (this requires a valid photo URL or upload handling).
+    const img = new Image();
+    img.src = photo;
+    img.onload = () => {
+      ctx.drawImage(img, 100, 150, 200, 200);
+    };
+
+    document.getElementById('download').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'wanted-poster.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  </script>
+</body>
+</html>
