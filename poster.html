@@ -3,24 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wanted Poster</title>
+  <title>Fingerprint Scanner</title>
   <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-      margin: 20px;
+    @font-face {
+      font-family: 'Goku';
+      src: url('Goku.woff2') format('woff2'); /* Update path */
     }
-    #posterCanvas {
-      border: 2px solid black;
+    body {
+      font-family: 'Goku', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: black;
+      color: white;
+    }
+    .scanner-box {
+      width: 150px;
+      height: 150px;
+      border: 4px solid #00ffcc;
+      border-radius: 50%;
+      margin: 20px;
+      display: none;
+    }
+    .progress {
+      font-size: 18px;
+      margin-top: 20px;
     }
     button {
-      margin-top: 20px;
       padding: 10px 20px;
-      font-size: 16px;
       background-color: orange;
-      color: white;
+      color: black;
       border: none;
       border-radius: 5px;
+      font-size: 16px;
       cursor: pointer;
     }
     button:hover {
@@ -29,38 +48,31 @@
   </style>
 </head>
 <body>
-  <h1>Your Wanted Poster</h1>
-  <canvas id="posterCanvas" width="400" height="600"></canvas>
-  <button id="download">Download Poster</button>
+  <h1>Fingerprint Scanner</h1>
+  <button id="startScan">Place Finger</button>
+  <div id="scanners" style="display: none;">
+    <div class="scanner-box"></div>
+    <div class="progress" id="progress">Progress: 0%</div>
+  </div>
+
   <script>
-    const canvas = document.getElementById('posterCanvas');
-    const ctx = canvas.getContext('2d');
+    const button = document.getElementById('startScan');
+    const scanners = document.getElementById('scanners');
+    const progressElement = document.getElementById('progress');
+    let progress = 0;
 
-    const name = localStorage.getItem('name');
-    const age = localStorage.getItem('age');
-    const gender = localStorage.getItem('gender');
-    const photo = localStorage.getItem('photo');
-
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, 400, 600);
-    ctx.fillStyle = '#000';
-    ctx.font = '20px Canterbury Regular';
-    ctx.fillText(`Name: ${name}`, 50, 50);
-    ctx.fillText(`Age: ${age}`, 50, 80);
-    ctx.fillText(`Gender: ${gender}`, 50, 110);
-
-    // Add user photo (this requires a valid photo URL or upload handling).
-    const img = new Image();
-    img.src = photo;
-    img.onload = () => {
-      ctx.drawImage(img, 100, 150, 200, 200);
-    };
-
-    document.getElementById('download').addEventListener('click', () => {
-      const link = document.createElement('a');
-      link.download = 'wanted-poster.png';
-      link.href = canvas.toDataURL();
-      link.click();
+    button.addEventListener('click', () => {
+      button.style.display = 'none';
+      scanners.style.display = 'block';
+      const interval = setInterval(() => {
+        if (progress >= 100) {
+          clearInterval(interval);
+          window.location.href = 'poster.html';
+        } else {
+          progress++;
+          progressElement.textContent = `Progress: ${progress}%`;
+        }
+      }, 50);
     });
   </script>
 </body>
