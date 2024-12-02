@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanted Poster Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+        form {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input, select, button {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #poster-container {
+            margin-top: 20px;
+            position: relative;
+            display: none;
+        }
+        #poster {
+            width: 400px;
+            height: auto;
+            position: relative;
+        }
+        #upload-image-preview {
+            position: absolute;
+            top: 95px;
+            left: 110px;
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+        }
+        .poster-details {
+            position: absolute;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: black;
+        }
+        #name-text { top: 300px; left: 30px; }
+        #age-text { top: 330px; left: 30px; }
+        #crime-text { top: 360px; left: 30px; }
+        #sex-text { top: 390px; left: 30px; }
+        button.download-btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button.download-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wanted Poster Game</h1>
+    <form id="user-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Enter your name" required>
+        <label for="age">Age:</label>
+        <input type="number" id="age" placeholder="Enter your age" required>
+        <label for="gender">Gender:</label>
+        <select id="gender" required>
+            <option value="" disabled selected>Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        <label for="photo">Upload Photo:</label>
+        <input type="file" id="photo" accept="image/*" required>
+        <button type="submit">Generate Poster</button>
+    </form>
+
+    <div id="poster-container">
+        <canvas id="poster-canvas" width="400" height="600"></canvas>
+        <button class="download-btn" id="download-poster">Download Poster</button>
+    </div>
+
+    <script>
+        const form = document.getElementById("user-form");
+        const posterContainer = document.getElementById("poster-container");
+        const posterCanvas = document.getElementById("poster-canvas");
+        const downloadBtn = document.getElementById("download-poster");
+        const crimes = [
+            "Stole cookies from the jar",
+            "Sang too loudly in the shower",
+            "Took the last slice of pizza",
+            "Forgot to text back",
+            "Used too many emojis in a message",
+            "Watched an entire series in one night",
+            "Didn't share Wi-Fi password"
+        ];
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            // Get user input
+            const name = document.getElementById("name").value;
+            const age = document.getElementById("age").value;
+            const gender = document.getElementById("gender").value;
+            const photo = document.getElementById("photo").files[0];
+
+            if (!photo) {
+                alert("Please upload a photo.");
+                return;
+            }
+
+            // Random crime generation
+            const randomCrime = crimes[Math.floor(Math.random() * crimes.length)];
+
+            // Load poster image
+            const posterImage = new Image();
+            posterImage.src = URL.createObjectURL(photo);
+
+            // Wait for poster image to load
+            posterImage.onload = () => {
+                const ctx = posterCanvas.getContext("2d");
+
+                // Draw base poster
+                ctx.clearRect(0, 0, posterCanvas.width, posterCanvas.height);
+                const posterBg = new Image();
+                posterBg.src = "./wanted-poster-template.png"; // Replace with your uploaded image file path
+                posterBg.onload = () => {
+                    ctx.drawImage(posterBg, 0, 0, 400, 600);
+
+                    // Draw user photo
+                    ctx.drawImage(posterImage, 110, 95, 180, 180);
+
+                    // Add user details
+                    ctx.font = "bold 16px Arial";
+                    ctx.fillStyle = "black";
+                    ctx.fillText(`Name: ${name}`, 30, 300);
+                    ctx.fillText(`Age: ${age}`, 30, 330);
+                    ctx.fillText(`Crime: ${randomCrime}`, 30, 360);
+                    ctx.fillText(`Sex: ${gender}`, 30, 390);
+
+                    // Show poster container
+                    posterContainer.style.display = "block";
+                };
+            };
+        });
+
+        downloadBtn.addEventListener("click", () => {
+            const link = document.createElement("a");
+            link.download = "wanted-poster.png";
+            link.href = posterCanvas.toDataURL();
+            link.click();
+        });
+    </script>
+</body>
+  </html>
