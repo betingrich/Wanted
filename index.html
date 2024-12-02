@@ -3,46 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Input</title>
+  <title>Generate Poster</title>
   <style>
+    @font-face {
+      font-family: 'Goku';
+      src: url('Goku.woff2') format('woff2'); /* Update path */
+    }
     body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
+      font-family: 'Goku', sans-serif;
+      background: black;
       color: white;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
-    .container {
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 20px;
-      border-radius: 10px;
-      display: inline-block;
+    label {
+      font-size: 18px;
     }
-    input, button {
-      display: block;
-      margin: 10px auto;
+    input, select, button {
       padding: 10px;
       font-size: 16px;
-      border: none;
-      border-radius: 5px;
+      font-family: 'Goku', sans-serif;
     }
     button {
       background-color: orange;
-      color: white;
+      color: black;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
     button:hover {
@@ -51,28 +46,43 @@
   </style>
 </head>
 <body>
-  <video autoplay muted loop>
-    <source src="https://pin.it/h1rNZRA5v" type="video/mp4">
-    Your browser does not support HTML5 video.
-  </video>
-  <div class="container">
-    <h1>Enter Your Details</h1>
-    <form id="userForm">
-      <input type="text" id="name" placeholder="Name" required>
-      <input type="number" id="age" placeholder="Age" required>
-      <input type="text" id="gender" placeholder="Gender" required>
-      <input type="file" id="photo" accept="image/*" required>
-      <button type="submit">Generate Poster</button>
-    </form>
-  </div>
+  <h1>Generate Your Wanted Poster</h1>
+  <form id="userForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" required>
+    
+    <label for="age">Age:</label>
+    <input type="number" id="age" required>
+    
+    <label for="gender">Gender:</label>
+    <select id="gender" required>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+
+    <label for="photo">Upload Image:</label>
+    <input type="file" id="photo" accept="image/*" required>
+
+    <button type="submit">Generate</button>
+  </form>
+
   <script>
-    document.getElementById('userForm').addEventListener('submit', function(e) {
+    document.getElementById('userForm').addEventListener('submit', function (e) {
       e.preventDefault();
-      localStorage.setItem('name', document.getElementById('name').value);
-      localStorage.setItem('age', document.getElementById('age').value);
-      localStorage.setItem('gender', document.getElementById('gender').value);
-      localStorage.setItem('photo', document.getElementById('photo').files[0].name);
-      window.location.href = 'scan.html';
+      const reader = new FileReader();
+      const photo = document.getElementById('photo').files[0];
+      const name = document.getElementById('name').value;
+      const age = document.getElementById('age').value;
+      const gender = document.getElementById('gender').value;
+
+      reader.onload = function () {
+        localStorage.setItem('photo', reader.result);
+        localStorage.setItem('name', name);
+        localStorage.setItem('age', age);
+        localStorage.setItem('gender', gender);
+        window.location.href = 'scan.html';
+      };
+      reader.readAsDataURL(photo);
     });
   </script>
 </body>
